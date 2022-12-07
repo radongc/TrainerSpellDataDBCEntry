@@ -18,6 +18,7 @@ namespace TrainerSpellDataDBCEntry
         public float CopperCost { get; set; }
         public float SkillCost { get; set; }
         public float TalentCost { get; set; }
+        public int RequiredSkill { get; set; }
         public int ClassMask { get; set; }
         public string Class { get; set; }
         public int TrainerID { get; set; }

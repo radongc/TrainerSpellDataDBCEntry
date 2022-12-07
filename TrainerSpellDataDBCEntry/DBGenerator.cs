@@ -23,13 +23,15 @@ namespace TrainerSpellDataDBCEntry
     {
         DBConnector m_dbcConnector;
 
-        int TALENT_TRAINER_ID = 100;
+        int TALENT_TRAINER_ID = 1000;
 
         int[] SKILL_LINES_TRAINER = { 6, 8, 26, 38, 39, 40, 50, 51, 56, 78, 96, 120, 130, 134, 163, 184, 198, 199, 237, 238, 239, 241, 243, 244, 245, 246, 247, 253, 254, 255, 256, 258, 259, 260, 261, 262, 263, 264, 267, 269, 271, 353, 354 };
         int[] SKILL_LINES_TALENT = { 222, 230, 231, 233, 234 };
 
         // 51, 242, 181 removed
         int[] SKILL_LINES_PROFESSION = { 129, 142, 164, 165, 171, 182, 185, 186, 197, 202, 249, 356 };
+
+        Dictionary<string, int> m_skillNameToID = new Dictionary<string, int>();
 
         Dictionary<int, float> m_spellLevelToPrice = new Dictionary<int, float>(); // price is in copper, so price of 80 is 80 copper, price of 200 is 2 silver, etc.
 
@@ -58,6 +60,28 @@ namespace TrainerSpellDataDBCEntry
             {
                 MessageBox.Show("Connection could not be established.");
             }
+
+            // Weapon skills
+            m_skillNameToID.Add("2H Axe", 172);
+            m_skillNameToID.Add("2H Mace", 160);
+            m_skillNameToID.Add("2H Sword", 55);
+            m_skillNameToID.Add("Axe", 44);
+            m_skillNameToID.Add("Mace", 54);
+            m_skillNameToID.Add("Sword", 43);
+            m_skillNameToID.Add("Crossbow", 226);
+            m_skillNameToID.Add("Bow", 45);
+            m_skillNameToID.Add("Dagger", 173);
+            m_skillNameToID.Add("Throwing", 176);
+            m_skillNameToID.Add("Gun", 46);
+            m_skillNameToID.Add("Staff", 136);
+
+            // Magic talents
+            m_skillNameToID.Add("Fire", 172);
+            m_skillNameToID.Add("Frost", 160);
+            m_skillNameToID.Add("Holy", 55);
+            m_skillNameToID.Add("Nature", 44);
+            m_skillNameToID.Add("Shadow", 54);
+            m_skillNameToID.Add("Wand", 43);
 
             m_catsAgilityTrainerSpells.Add("Rank 1", 4179);
             m_catsAgilityTrainerSpells.Add("Rank 2", 4180);
@@ -107,7 +131,7 @@ namespace TrainerSpellDataDBCEntry
 
             List<string> spellLines = new List<string>();
 
-            spellLines.Add("ID;TRAIN ID;NAME;RANK;PREV SPELL;FIRST SPELL;LEVEL;COST;CLASS;CLASS MASK;TRAINER ID;SKILL;SKILL ID");
+            spellLines.Add("ID,TRAIN ID,NAME,RANK,PREV SPELL,FIRST SPELL,LEVEL,COST,CLASS,CLASS MASK,TRAINER ID,SKILL,SKILL ID");
 
             PopulateSpellInfo(ref spellList, TrainerType.CLASS);
             PopulateClassInfo(ref spellList);
@@ -117,7 +141,7 @@ namespace TrainerSpellDataDBCEntry
             foreach(SpellInfo spell in spellList)
             {
                 //spellLines[iterator] = $"SpellID: {spell.ID}, Name: {spell.Name}, Rank: {spell.Rank}, Level: {spell.BaseLevel}, Skill: {spell.SkillLine}";
-                spellLines.Add($"{spell.ID};{spell.TrainSpellID};{spell.Name};{spell.RankText};{spell.PrevSpellInChain};{spell.FirstSpellInChain};{spell.BaseLevel};{spell.CopperCost};{spell.Class};{spell.ClassMask};{spell.TrainerID};{spell.SkillLine};{spell.SkillLineID}");
+                spellLines.Add($"{spell.ID},{spell.TrainSpellID},{spell.Name},{spell.RankText},{spell.PrevSpellInChain},{spell.FirstSpellInChain},{spell.BaseLevel},{spell.CopperCost},{spell.Class},{spell.ClassMask},{spell.TrainerID},{spell.SkillLine},{spell.SkillLineID}");
             }
 
             WriteToLogFile(spellLines, "spell_info.csv");
@@ -155,7 +179,7 @@ namespace TrainerSpellDataDBCEntry
 
             List<string> spellLines = new List<string>();
 
-            spellLines.Add("ID;TRAIN ID;NAME;RANK;PREV SPELL;FIRST SPELL;LEVEL;COST;CLASS;CLASS MASK;TRAINER ID;SKILL;SKILL ID");
+            spellLines.Add("ID,TRAIN ID,NAME,RANK,PREV SPELL,FIRST SPELL,LEVEL,COST,CLASS,CLASS MASK,TRAINER ID,SKILL,SKILL ID");
 
             PopulateSpellInfo(ref talentList, TrainerType.TALENT);
             PopulateTrainerSpellIDs(ref talentList, TrainerType.TALENT);
@@ -169,7 +193,7 @@ namespace TrainerSpellDataDBCEntry
                 }
 
                 //spellLines[iterator] = $"SpellID: {spell.ID}, Name: {spell.Name}, Rank: {spell.Rank}, Level: {spell.BaseLevel}, Skill: {spell.SkillLine}";
-                spellLines.Add($"{spell.ID};{spell.TrainSpellID};{spell.Name};{spell.RankText};{spell.PrevSpellInChain};{spell.FirstSpellInChain};{spell.BaseLevel};{spell.CopperCost};{spell.Class};{spell.ClassMask};{spell.TrainerID};{spell.SkillLine};{spell.SkillLineID}");
+                spellLines.Add($"{spell.ID},{spell.TrainSpellID},{spell.Name},{spell.RankText},{spell.PrevSpellInChain},{spell.FirstSpellInChain},{spell.BaseLevel},{spell.CopperCost},{spell.Class},{spell.ClassMask},{spell.TrainerID},{spell.SkillLine},{spell.SkillLineID}");
             }
 
             WriteToLogFile(spellLines, "spell_info_talent.csv");
@@ -207,7 +231,7 @@ namespace TrainerSpellDataDBCEntry
 
             List<string> spellLines = new List<string>();
 
-            spellLines.Add("ID;TRAIN ID;NAME;RANK;PREV SPELL;FIRST SPELL;LEVEL;SKILL;SKILL ID");
+            spellLines.Add("ID,TRAIN ID,NAME,RANK,PREV SPELL,FIRST SPELL,LEVEL,SKILL,SKILL ID");
 
             PopulateSpellInfo(ref professionList, TrainerType.PROFESSION);
             PopulateTrainerSpellIDs(ref professionList, TrainerType.PROFESSION);
@@ -215,7 +239,7 @@ namespace TrainerSpellDataDBCEntry
 
             foreach (SpellInfo spell in professionList)
             {
-                spellLines.Add($"{spell.ID};{spell.TrainSpellID};{spell.Name};{spell.RankText};{spell.PrevSpellInChain};{spell.FirstSpellInChain};{spell.BaseLevel};{spell.SkillLine};{spell.SkillLineID}");
+                spellLines.Add($"{spell.ID},{spell.TrainSpellID},{spell.Name},{spell.RankText},{spell.PrevSpellInChain},{spell.FirstSpellInChain},{spell.BaseLevel},{spell.SkillLine},{spell.SkillLineID}");
             }
 
             WriteToLogFile(spellLines, "spell_info_profession.csv");
@@ -245,24 +269,24 @@ namespace TrainerSpellDataDBCEntry
                         {
                             if (spell.TrainerID == 17 || spell.LowLvlTrainerID == 16)
                             {
-                                druidTrainerLines.Add($"INSERT INTO `training_info` (`template_entry`, `spell`, `playerspell`, `spellcost`, `talentpointcost`, `skillpointcost`, `reqskill`, `reqskillvalue`, `reqlevel`) VALUES ({spell.TrainerID}, {spell.TrainSpellID}, {spell.ID}, {spell.CopperCost}, {spell.TalentCost}, {spell.SkillCost}, 0, 0, {spell.BaseLevel});");
+                                druidTrainerLines.Add($"INSERT INTO `trainer_template` (`template_entry`, `spell`, `playerspell`, `spellcost`, `talentpointcost`, `skillpointcost`, `reqskill`, `reqskillvalue`, `reqlevel`) VALUES ({spell.TrainerID}, {spell.TrainSpellID}, {spell.ID}, {spell.CopperCost}, {spell.TalentCost}, {spell.SkillCost}, 0, 0, {spell.BaseLevel});");
                                 druidSpellChainLines.Add($"INSERT INTO `spell_chain` (`spell_id`, `prev_spell`, `first_spell`, `rank`, `req_spell`) VALUES ({spell.ID}, {spell.PrevSpellInChain}, {spell.FirstSpellInChain}, {spell.Rank}, 0);");
 
                                 if (spell.BaseLevel <= 6)
                                 {
-                                    lowLvlDruidTrainerLines.Add($"INSERT INTO `training_info` (`template_entry`, `spell`, `playerspell`, `spellcost`, `talentpointcost`, `skillpointcost`, `reqskill`, `reqskillvalue`, `reqlevel`) VALUES ({spell.LowLvlTrainerID}, {spell.TrainSpellID}, {spell.ID}, {spell.CopperCost}, {spell.TalentCost}, {spell.SkillCost}, 0, 0, {spell.BaseLevel});");
+                                    lowLvlDruidTrainerLines.Add($"INSERT INTO `trainer_template` (`template_entry`, `spell`, `playerspell`, `spellcost`, `talentpointcost`, `skillpointcost`, `reqskill`, `reqskillvalue`, `reqlevel`) VALUES ({spell.LowLvlTrainerID}, {spell.TrainSpellID}, {spell.ID}, {spell.CopperCost}, {spell.TalentCost}, {spell.SkillCost}, 0, 0, {spell.BaseLevel});");
                                 }
 
                                 alreadyUsedSpells.Add(new KeyValuePair<int, int>(spell.TrainerID, spell.TrainSpellID));
                             }
                             else
                             {
-                                npcTrainerLines.Add($"INSERT INTO `training_info` (`template_entry`, `spell`, `playerspell`, `spellcost`, `talentpointcost`, `skillpointcost`, `reqskill`, `reqskillvalue`, `reqlevel`) VALUES ({spell.TrainerID}, {spell.TrainSpellID}, {spell.ID}, {spell.CopperCost}, {spell.TalentCost}, {spell.SkillCost}, 0, 0, {spell.BaseLevel});");
+                                npcTrainerLines.Add($"INSERT INTO `trainer_template` (`template_entry`, `spell`, `playerspell`, `spellcost`, `talentpointcost`, `skillpointcost`, `reqskill`, `reqskillvalue`, `reqlevel`) VALUES ({spell.TrainerID}, {spell.TrainSpellID}, {spell.ID}, {spell.CopperCost}, {spell.TalentCost}, {spell.SkillCost}, 0, 0, {spell.BaseLevel});");
                                 spellChainLines.Add($"INSERT INTO `spell_chain` (`spell_id`, `prev_spell`, `first_spell`, `rank`, `req_spell`) VALUES ({spell.ID}, {spell.PrevSpellInChain}, {spell.FirstSpellInChain}, {spell.Rank}, 0);");
 
                                 if (spell.BaseLevel <= 6)
                                 {
-                                    lowLvlNpcTrainerLines.Add($"INSERT INTO `training_info` (`template_entry`, `spell`, `playerspell`, `spellcost`, `talentpointcost`, `skillpointcost`, `reqskill`, `reqskillvalue`, `reqlevel`) VALUES ({spell.LowLvlTrainerID}, {spell.TrainSpellID}, {spell.ID}, {spell.CopperCost}, {spell.TalentCost}, {spell.SkillCost}, 0, 0, {spell.BaseLevel});");
+                                    lowLvlNpcTrainerLines.Add($"INSERT INTO `trainer_template` (`template_entry`, `spell`, `playerspell`, `spellcost`, `talentpointcost`, `skillpointcost`, `reqskill`, `reqskillvalue`, `reqlevel`) VALUES ({spell.LowLvlTrainerID}, {spell.TrainSpellID}, {spell.ID}, {spell.CopperCost}, {spell.TalentCost}, {spell.SkillCost}, 0, 0, {spell.BaseLevel});");
                                 }
 
                                 alreadyUsedSpells.Add(new KeyValuePair<int, int>(spell.TrainerID, spell.TrainSpellID));
@@ -271,12 +295,12 @@ namespace TrainerSpellDataDBCEntry
                     }
                 }
 
-                WriteToLogFile(druidTrainerLines, "training_info_inserts_druid.sql");
-                WriteToLogFile(lowLvlDruidTrainerLines, "training_info_inserts_druid_lowlvl.sql");
+                WriteToLogFile(druidTrainerLines, "trainer_template_inserts_druid.sql");
+                WriteToLogFile(lowLvlDruidTrainerLines, "trainer_template_inserts_druid_lowlvl.sql");
                 WriteToLogFile(druidSpellChainLines, "spell_chain_inserts_druid.sql");
 
-                WriteToLogFile(npcTrainerLines, "training_info_inserts.sql");
-                WriteToLogFile(lowLvlNpcTrainerLines, "training_info_inserts_lowlvl.sql");
+                WriteToLogFile(npcTrainerLines, "trainer_template_inserts.sql");
+                WriteToLogFile(lowLvlNpcTrainerLines, "trainer_template_inserts_lowlvl.sql");
                 WriteToLogFile(spellChainLines, "spell_chain_inserts.sql");
             }
             else if (trainerType == TrainerType.TALENT)
@@ -292,15 +316,15 @@ namespace TrainerSpellDataDBCEntry
                     {
                         if (!alreadyUsedSpells.Contains(new KeyValuePair<int, int>(spell.TrainerID, spell.TrainSpellID)))
                         {
-                            npcTrainerLines.Add($"INSERT INTO `training_info` (`template_entry`, `spell`, `playerspell`, `spellcost`, `talentpointcost`, `skillpointcost`, `reqskill`, `reqskillvalue`, `reqlevel`) VALUES ({TALENT_TRAINER_ID}, {spell.TrainSpellID}, {spell.ID}, 0, {spell.TalentCost}, 0, 0, 0, 0);");
-                            spellChainLines.Add($"INSERT INTO `spell_chain` (`spell_id`, `prev_spell`, `first_spell`, `rank`, `req_spell`) VALUES ({spell.ID}, {spell.PrevSpellInChain}, {spell.FirstSpellInChain}, {spell.Rank}, 0);");
+                            npcTrainerLines.Add($"REPLACE INTO `trainer_template` (`template_entry`, `spell`, `playerspell`, `spellcost`, `talentpointcost`, `skillpointcost`, `reqskill`, `reqskillvalue`, `reqlevel`) VALUES ({TALENT_TRAINER_ID}, {spell.TrainSpellID}, {spell.ID}, 0, {spell.TalentCost}, 0, {spell.RequiredSkill}, {(spell.RequiredSkill != 0 ? 1 : 0)}, 0);");
+                            spellChainLines.Add($"REPLACE INTO `spell_chain` (`spell_id`, `prev_spell`, `first_spell`, `rank`, `req_spell`) VALUES ({spell.ID}, {spell.PrevSpellInChain}, {spell.FirstSpellInChain}, {spell.Rank}, 0);");
 
                             alreadyUsedSpells.Add(new KeyValuePair<int, int>(spell.TrainerID, spell.TrainSpellID));
                         }
                     }
                 }
 
-                WriteToLogFile(npcTrainerLines, "training_info_inserts_talent.sql");
+                WriteToLogFile(npcTrainerLines, "trainer_template_inserts_talent.sql");
                 WriteToLogFile(spellChainLines, "spell_chain_inserts_talent.sql");
             }
             else if (trainerType == TrainerType.PROFESSION)
@@ -572,6 +596,58 @@ namespace TrainerSpellDataDBCEntry
                     catch (Exception b)
                     {
                         MessageBox.Show(b.ToString());
+                    }
+
+                    if (spell.SkillLineID == 222)
+                    {
+                        if (spell.Name.Contains("2H Axe"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["2H Axe"];
+                        }
+                        else if (spell.Name.Contains("2H Sword"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["2H Sword"];
+                        }
+                        else if (spell.Name.Contains("2H Mace"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["2H Mace"];
+                        }
+                        else if (spell.Name.Contains("Axe"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Axe"];
+                        }
+                        else if (spell.Name.Contains("Sword"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Sword"];
+                        }
+                        else if (spell.Name.Contains("Mace"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Mace"];
+                        }
+                        else if (spell.Name.Contains("Crossbow"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Crossbow"];
+                        }
+                        else if (spell.Name.Contains("Bow"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Bow"];
+                        }
+                        else if (spell.Name.Contains("Dagger"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Dagger"];
+                        }
+                        else if (spell.Name.Contains("Throwing"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Throwing"];
+                        }
+                        else if (spell.Name.Contains("Gun"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Gun"];
+                        }
+                        else if (spell.Name.Contains("Staff"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Staff"];
+                        }
                     }
 
                     spell.TrainerID = TALENT_TRAINER_ID;
