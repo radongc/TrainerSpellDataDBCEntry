@@ -76,12 +76,12 @@ namespace TrainerSpellDataDBCEntry
             m_skillNameToID.Add("Staff", 136);
 
             // Magic talents
-            m_skillNameToID.Add("Fire", 172);
-            m_skillNameToID.Add("Frost", 160);
-            m_skillNameToID.Add("Holy", 55);
-            m_skillNameToID.Add("Nature", 44);
-            m_skillNameToID.Add("Shadow", 54);
-            m_skillNameToID.Add("Wand", 43);
+            m_skillNameToID.Add("Fire", 8);
+            m_skillNameToID.Add("Frost", 6);
+            m_skillNameToID.Add("Holy", 56);
+            m_skillNameToID.Add("Nature", 96);
+            m_skillNameToID.Add("Shadow", 78);
+            m_skillNameToID.Add("Wand", 228);
 
             m_catsAgilityTrainerSpells.Add("Rank 1", 4179);
             m_catsAgilityTrainerSpells.Add("Rank 2", 4180);
@@ -647,6 +647,33 @@ namespace TrainerSpellDataDBCEntry
                         else if (spell.Name.Contains("Staff"))
                         {
                             spell.RequiredSkill = m_skillNameToID["Staff"];
+                        }
+                    }
+                    else if (spell.SkillLineID == 233)
+                    {
+                        if (spell.Name.Contains("Fire") && !spell.Name.Contains("Resist"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Fire"];
+                        }
+                        else if (spell.Name.Contains("Frost") && !spell.Name.Contains("Resist"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Frost"];
+                        }
+                        else if (spell.Name.Contains("Holy") && !spell.Name.Contains("Resist"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Holy"];
+                        }
+                        else if (spell.Name.Contains("Nature") && !spell.Name.Contains("Resist"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Nature"];
+                        }
+                        else if (spell.Name.Contains("Shadow") && !spell.Name.Contains("Resist"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Shadow"];
+                        }
+                        else if (spell.Name.Contains("Wand") && !spell.Name.Contains("Resist"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Wand"];
                         }
                     }
 
