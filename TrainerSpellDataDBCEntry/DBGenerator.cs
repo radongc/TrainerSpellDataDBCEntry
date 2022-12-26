@@ -600,22 +600,80 @@ namespace TrainerSpellDataDBCEntry
 
                     if (spell.SkillLineID == 222)
                     {
-                        foreach (KeyValuePair<string, int> skill in m_skillNameToID)
+                        if (spell.Name.Contains("2H Axe"))
                         {
-                            if (spell.Name.Contains(skill.Key))
-                            {
-                                spell.RequiredSkill = m_skillNameToID[skill.Key];
-                            }
+                            spell.RequiredSkill = m_skillNameToID["2H Axe"];
+                        }
+                        else if (spell.Name.Contains("2H Sword"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["2H Sword"];
+                        }
+                        else if (spell.Name.Contains("2H Mace"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["2H Mace"];
+                        }
+                        else if (spell.Name.Contains("Axe"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Axe"];
+                        }
+                        else if (spell.Name.Contains("Sword"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Sword"];
+                        }
+                        else if (spell.Name.Contains("Mace"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Mace"];
+                        }
+                        else if (spell.Name.Contains("Crossbow"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Crossbow"];
+                        }
+                        else if (spell.Name.Contains("Bow"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Bow"];
+                        }
+                        else if (spell.Name.Contains("Dagger"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Dagger"];
+                        }
+                        else if (spell.Name.Contains("Throwing"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Throwing"];
+                        }
+                        else if (spell.Name.Contains("Gun"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Gun"];
+                        }
+                        else if (spell.Name.Contains("Staff"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Staff"];
                         }
                     }
                     else if (spell.SkillLineID == 233)
                     {
-                        foreach (KeyValuePair<string, int> skill in m_skillNameToID)
+                        if (spell.Name.Contains("Fire") && !spell.Name.Contains("Resist"))
                         {
-                            if (spell.Name.Contains(skill.Key) && !spell.Name.Contains("Resist"))
-                            {
-                                spell.RequiredSkill = m_skillNameToID[skill.Key];
-                            }
+                            spell.RequiredSkill = m_skillNameToID["Fire"];
+                        }
+                        else if (spell.Name.Contains("Frost") && !spell.Name.Contains("Resist"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Frost"];
+                        }
+                        else if (spell.Name.Contains("Holy") && !spell.Name.Contains("Resist"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Holy"];
+                        }
+                        else if (spell.Name.Contains("Nature") && !spell.Name.Contains("Resist"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Nature"];
+                        }
+                        else if (spell.Name.Contains("Shadow") && !spell.Name.Contains("Resist"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Shadow"];
+                        }
+                        else if (spell.Name.Contains("Wand") && !spell.Name.Contains("Resist"))
+                        {
+                            spell.RequiredSkill = m_skillNameToID["Wand"];
                         }
                     }
 
