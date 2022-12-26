@@ -598,6 +598,7 @@ namespace TrainerSpellDataDBCEntry
                         MessageBox.Show(b.ToString());
                     }
 
+                    // Weapon talents
                     if (spell.SkillLineID == 222)
                     {
                         if (spell.Name.Contains("2H Axe"))
@@ -648,7 +649,25 @@ namespace TrainerSpellDataDBCEntry
                         {
                             spell.RequiredSkill = m_skillNameToID["Staff"];
                         }
+
+                        if (spell.Name.Contains("Specialization"))
+                        {
+                            spell.TalentCost = 10 + ((GetRankNumFromRank(spell.RankText) - 1) * 5);
+                        }
+                        else if (spell.Name.Contains("Finesse"))
+                        {
+                            spell.TalentCost = 20 + ((GetRankNumFromRank(spell.RankText) - 1) * 10);
+                        }
+                        else if (spell.Name.Contains("Mastery"))
+                        {
+                            spell.TalentCost = 25 + ((GetRankNumFromRank(spell.RankText) - 1) * 15);
+                        }
+                        else if (spell.Name.Contains("Power"))
+                        {
+                            spell.TalentCost = 15 + ((GetRankNumFromRank(spell.RankText) - 1) * 5);
+                        }
                     }
+                    // Magic talents
                     else if (spell.SkillLineID == 233)
                     {
                         if (spell.Name.Contains("Fire") && !spell.Name.Contains("Resist"))
@@ -679,7 +698,14 @@ namespace TrainerSpellDataDBCEntry
 
                     spell.TrainerID = TALENT_TRAINER_ID;
 
-                    spell.TalentCost = 0; // this can be resolved within the emulator itself
+                    if (spell.TalentCost > 0)
+                    {
+
+                    }
+                    else
+                    {
+                        spell.TalentCost = 0; // this can be resolved within the emulator itself
+                    }
 
                     m_dbcConnector.SQLConnection.Close();
                 }
@@ -715,8 +741,6 @@ namespace TrainerSpellDataDBCEntry
                     }
 
                     spell.TrainerID = 0;
-
-                    spell.TalentCost = 0; // this can be resolved within the emulator itself
 
                     m_dbcConnector.SQLConnection.Close();
                 }
@@ -960,7 +984,7 @@ namespace TrainerSpellDataDBCEntry
 
             if (rankText.Contains("Rank"))
             {
-                myRank = Int32.Parse(rankText.Last().ToString());
+                myRank = Int32.Parse(rankText.Split(' ')[1].ToString());
             }
 
             return myRank;
